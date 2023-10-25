@@ -3,8 +3,8 @@ let ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-ctx.fillStyle = "white";
-ctx.strokeStyle = "white";
+ctx.fillStyle = "black";
+ctx.strokeStyle = "gray";
 ctx.font = "20px Arial";
 
 
@@ -32,7 +32,7 @@ class Node{
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         // Label should be in the middle of the node
         if(this.label.length > 1){
             ctx.fillText(this.label, this.x - (this.label.length * 5), this.y + 7);
@@ -65,7 +65,7 @@ class Edge{
         ctx.moveTo(x2, y2);
         ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
         ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "black";
         ctx.fill();
         ctx.closePath();
     }
@@ -260,7 +260,7 @@ addNodeButton.addEventListener("click", () => {
     
     // clear input fields
     addNodeLabel.value = "";
-    addNodeColor.value = "#000000";
+    addNodeColor.value = "#ffffff";
 })
 
 
