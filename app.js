@@ -3,7 +3,7 @@ let ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-ctx.fillStyle = "black";
+ctx.fillStyle = "white";
 ctx.strokeStyle = "gray";
 ctx.font = "20px Arial";
 
@@ -116,15 +116,17 @@ class Graph{
             }
         }
 
+        // Draw nodes
+        for(let node of this.nodes){
+            node.draw();
+        }
+
         // Draw edges
         for(let edge of this.edges){
             edge.draw();
         }
 
-        // Draw nodes
-        for(let node of this.nodes){
-            node.draw();
-        }
+        
     }
 
     inDegree(label){
@@ -485,7 +487,6 @@ canvas.addEventListener("mousedown", (e) => {
     let x = e.clientX;
     let y = e.clientY;
     draggedNode = graph.getNodeAt(x, y);
-    console.log(draggedNode);
 }
 );
 
@@ -551,33 +552,46 @@ fileInputGraphviz.addEventListener("change", () => {
         let nodes = [];
         let edges = [];
         for(let line of lines){
-            if(line.includes("->")){
+            // handle -- edge
+            if(line.includes("--")){
+                let source = line.split("--")[0].trim();
+                let target = line.split("--")[1].trim();
+                edges.push({
+                    source: source,
+                    target: target
+                });
+                edges.push({
+                    source: target,
+                    target: source
+                });
+                // Add both to nodes
+                if(!nodes.includes(source)){
+                    nodes.push(source);
+                }
+                if(!nodes.includes(target)){
+                    nodes.push(target);
+                }
+            }
+            else if(line.includes("->")){
                 let source = line.split("->")[0].trim();
                 let target = line.split("->")[1].trim();
                 edges.push({
                     source: source,
                     target: target
                 });
-            }else if(line.includes("[")){
-                let label = line.split("[")[0].trim();
-                let color = line.split("[")[1].split("=")[1].split("]")[0].trim();
-                nodes.push({
-                    label: label,
-                    color: color
-                });
-            }
-            else{
-                let label = line.trim();
-                nodes.push({
-                    label: label,
-                    color: "black"
-                });
+                // Add both to nodes
+                if(!nodes.includes(source)){
+                    nodes.push(source);
+                }
+                if(!nodes.includes(target)){
+                    nodes.push(target);
+                }
             }
         }
         graph.nodes = [];
         graph.edges = [];
         for(let node of nodes){
-            let n = new Node(node.label, node.color);
+            let n = new Node(node, "#ffffff");
             graph.addNode(n);
         }
         for(let edge of edges){
